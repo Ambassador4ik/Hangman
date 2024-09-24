@@ -204,7 +204,7 @@ public class AssertjExamplesTest {
 
             assertThat(throwable).hasMessage("wrong amount 123")
                 .hasMessage("%s amount %d", "wrong", 123)
-                // check start
+                // check run
                 .hasMessageStartingWith("wrong")
                 .hasMessageStartingWith("%s a", "wrong")
                 // check content
