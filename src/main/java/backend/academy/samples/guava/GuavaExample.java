@@ -1,18 +1,14 @@
 package backend.academy.samples.guava;
 
-import com.google.common.collect.ArrayListMultimap;
-import com.google.common.collect.ImmutableList;
-import com.google.common.collect.Multimap;
-import com.google.common.collect.Sets;
-import com.google.common.collect.Streams;
+import com.google.common.collect.*;
 import com.google.common.io.Files;
+import lombok.extern.log4j.Log4j2;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 import java.util.function.Predicate;
-import lombok.extern.log4j.Log4j2;
 
 /**
  * Guava is a set of core Java libraries that includes a lot of useful utility classes (analogous to Apache Commons).

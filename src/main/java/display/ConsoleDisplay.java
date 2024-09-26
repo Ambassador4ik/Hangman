@@ -1,10 +1,12 @@
 package display;
 
-import lombok.Getter;
+import handlers.OutputHandler;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import lombok.Getter;
 
+@SuppressWarnings("MultipleStringLiterals")
 public class ConsoleDisplay implements LineListener {
     private final List<Line> lines;
     private boolean isRendered;
@@ -28,7 +30,7 @@ public class ConsoleDisplay implements LineListener {
      */
     public void render() {
         for (Line line : lines) {
-            System.out.println(line.getContent());
+            OutputHandler.println(line.getContent());
         }
         isRendered = true;
     }
@@ -64,16 +66,16 @@ public class ConsoleDisplay implements LineListener {
         int linesBelow = lines.size() - index + shift;
 
         // Move cursor up to the target line
-        System.out.printf("\033[%dA", linesBelow); // Move up
+        OutputHandler.printf("\033[%dA", linesBelow); // Move up
 
         // Clear the line
-        System.out.print("\r\033[K");
+        OutputHandler.print("\r\033[K");
 
         // Print the new content
-        System.out.println(newContent);
+        OutputHandler.println(newContent);
 
         // Move the cursor back down to the original position
-        System.out.printf("\033[%dB", linesBelow - 1);
+        OutputHandler.printf("\033[%dB", linesBelow - 1);
     }
 
     /**
@@ -125,7 +127,7 @@ public class ConsoleDisplay implements LineListener {
         if (isRendered) {
             // Append the new lines to the console
             for (Line line : newLines) {
-                System.out.println(line.getContent());
+                OutputHandler.println(line.getContent());
             }
         }
     }

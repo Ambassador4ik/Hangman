@@ -1,11 +1,11 @@
 package display;
 
-import lombok.Getter;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.stream.Collectors;
+import lombok.Getter;
 
 /**
  * Represents a mutable line with content that can be modified.
@@ -13,6 +13,7 @@ import java.util.stream.Collectors;
  * @param <T> The type of elements in the content.
  */
 @Getter
+@SuppressWarnings("MultipleStringLiterals")
 public class MutableLine<T> implements Line {
     private final String sep;
     private final List<T> content;
@@ -52,11 +53,22 @@ public class MutableLine<T> implements Line {
             return "[Empty Mutable Line]";
         }
         return content.stream()
-                      .map(Object::toString)
-                      .collect(Collectors.joining(sep));
+            .map(Object::toString)
+            .collect(Collectors.joining(sep));
     }
 
     // Listener registration methods
+
+    /**
+     * Sets the entire content to a new collection of items.
+     *
+     * @param newContent The new collection of items.
+     */
+    public void setContent(Collection<T> newContent) {
+        content.clear();
+        content.addAll(newContent);
+        notifyListeners();
+    }
 
     /**
      * Adds a listener to be notified of content changes.
@@ -67,6 +79,8 @@ public class MutableLine<T> implements Line {
         listeners.add(listener);
     }
 
+    // Notify listeners of changes
+
     /**
      * Removes a listener from notifications.
      *
@@ -76,7 +90,7 @@ public class MutableLine<T> implements Line {
         listeners.remove(listener);
     }
 
-    // Notify listeners of changes
+    // Content modification methods
 
     /**
      * Notifies all registered listeners about a content change.
@@ -86,8 +100,6 @@ public class MutableLine<T> implements Line {
             listener.onLineChanged(this);
         }
     }
-
-    // Content modification methods
 
     /**
      * Adds an item to the end of the content.
@@ -188,16 +200,5 @@ public class MutableLine<T> implements Line {
             content.clear();
             notifyListeners();
         }
-    }
-
-    /**
-     * Sets the entire content to a new collection of items.
-     *
-     * @param newContent The new collection of items.
-     */
-    public void setContent(Collection<T> newContent) {
-        content.clear();
-        content.addAll(newContent);
-        notifyListeners();
     }
 }

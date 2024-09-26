@@ -1,20 +1,21 @@
 package hangman;
 
 import display.MutableLine;
-import lombok.Getter;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
+import lombok.Getter;
 
-public class SimpleHangman {
+@SuppressWarnings("all")
+public class SimpleHangman implements Hangman {
     @Getter private final List<MutableLine<Character>> hangmanLines = Arrays.asList(
-        new MutableLine<>(toCharacterList(" +--+"),""),
-        new MutableLine<>(toCharacterList(" |  |"),""),
-        new MutableLine<>(toCharacterList("    |"),""),
-        new MutableLine<>(toCharacterList("    |"),""),
-        new MutableLine<>(toCharacterList("    |"),""),
-        new MutableLine<>(toCharacterList("    |"),""),
-        new MutableLine<>(toCharacterList("====="),"")
+        new MutableLine<>(toCharacterList(" +--+"), ""),
+        new MutableLine<>(toCharacterList(" |  |"), ""),
+        new MutableLine<>(toCharacterList("    |"), ""),
+        new MutableLine<>(toCharacterList("    |"), ""),
+        new MutableLine<>(toCharacterList("    |"), ""),
+        new MutableLine<>(toCharacterList("    |"), ""),
+        new MutableLine<>(toCharacterList("====="), "")
     );
 
     private final List<Runnable> hangmanStages = Arrays.asList(
@@ -28,8 +29,15 @@ public class SimpleHangman {
 
     private int currentStage = 0;
 
+    private static List<Character> toCharacterList(String str) {
+        return str.chars()
+            .mapToObj(c -> (char) c)
+            .collect(Collectors.toList());
+    }
+
     public boolean nextStage() {
-        if (currentStage >= hangmanStages.size()) {
+        if (currentStage + 1 >= hangmanStages.size()) {
+            hangmanStages.get(currentStage).run();
             return false;
         }
         hangmanStages.get(currentStage).run();
@@ -37,9 +45,18 @@ public class SimpleHangman {
         return true;
     }
 
-    private static List<Character> toCharacterList(String str) {
-        return str.chars()
-                  .mapToObj(c -> (char) c)
-                  .collect(Collectors.toList());
+    public boolean setAttempts(int attempts) {
+        if (attempts < 0 || attempts > 6) {
+            return false;
+        }
+
+        int skipStages = 6 - attempts;
+
+        while (skipStages > 0) {
+            hangmanStages.get(currentStage).run();
+            ++currentStage;
+            --skipStages;
+        }
+        return true;
     }
 }

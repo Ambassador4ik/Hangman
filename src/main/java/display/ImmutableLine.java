@@ -1,8 +1,6 @@
 package display;
 
-import lombok.EqualsAndHashCode;
 import lombok.Getter;
-import lombok.ToString;
 
 @Getter
 public class ImmutableLine implements Line {
