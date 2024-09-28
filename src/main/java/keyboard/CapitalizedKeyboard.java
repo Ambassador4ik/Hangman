@@ -7,7 +7,7 @@ import lombok.Getter;
 @Getter
 public class CapitalizedKeyboard implements Keyboard {
     public static final String RESET = "\u001B[0m";
-    private static final String STYLE = "\u001B[31m";
+    public static final String STYLE = "\u001B[31m";
     private final MutableLine<String> keyboardLine1 =
         new MutableLine<String>(Arrays.asList("Q", "W", "E", "R", "T", "Y", "U", "I", "O", "P"));
     private final MutableLine<String> keyboardLine2 =

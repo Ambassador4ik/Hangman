@@ -4,11 +4,13 @@ import java.nio.charset.StandardCharsets;
 import java.util.NoSuchElementException;
 import java.util.Scanner;
 import java.util.function.Predicate;
+import lombok.Getter;
 
 /**
  * A class that handles user input in a loop, processes it using a provided logic predicate,
  * and exits gracefully based on specified conditions.
  */
+@Getter
 public class UserInputHandler {
     private final Predicate<String> logic;
     private final String exitSeq;

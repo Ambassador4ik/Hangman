@@ -30,11 +30,12 @@ public final class SetupWizard {
     }
 
     public static String setupWordChoice() {
+        HangmanWords hangmanWords = new HangmanWords();
         OutputHandler.println("Please specify word category "
             + "(0 - Random, 1 - Fruits, 2 - Animals, 3 - Countries, 4 - Sports, 5 - Colors)");
         int categoryId = InputUtil.readIntInRange("Enter category ID:", 0,
-            HangmanWords.getAllCategories().size());
+            hangmanWords.getAllCategories().size());
 
-        return HangmanWords.getRandomWord(categoryId).toUpperCase();
+        return hangmanWords.getRandomWord(categoryId).toUpperCase();
     }
 }

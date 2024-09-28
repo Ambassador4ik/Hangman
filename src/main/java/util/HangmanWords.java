@@ -7,13 +7,13 @@ import java.util.List;
 import java.util.Map;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
-import lombok.experimental.UtilityClass;
+import lombok.Setter;
 
 /**
  * A utility class for managing Hangman words categorized by different themes.
  * Provides functionality to retrieve random words based on category IDs.
  */
-@UtilityClass
+@Getter
 public final class HangmanWords {
 
     /**
@@ -51,34 +51,45 @@ public final class HangmanWords {
         }
 
         /**
-         * Returns a random Category using the outer class's SecureRandom instance.
+         * Returns a random Category using the provided SecureRandom instance.
          *
+         * @param random SecureRandom instance
          * @return a randomly selected Category
          */
-        public static Category getRandomCategory() {
+        public static Category getRandomCategory(SecureRandom random) {
             Category[] categories = values();
-            int randomIndex = HangmanWords.SECURE_RANDOM.nextInt(categories.length);
+            int randomIndex = random.nextInt(categories.length);
             return categories[randomIndex];
         }
     }
 
     // Immutable map holding categories and their corresponding word lists
-    private static final Map<Integer, List<String>> CATEGORY_WORDS_MAP;
+    private final Map<Integer, List<String>> categoryWordsMap;
 
     // SecureRandom instance for generating secure random numbers
-    private static final SecureRandom SECURE_RANDOM;
+    @Setter
+    private SecureRandom secureRandom;
 
-    static {
-        // Initialize the SecureRandom instance
-        try {
-            // You can specify the algorithm if needed, e.g., "SHA1PRNG"
-            SECURE_RANDOM = SecureRandom.getInstanceStrong();
-        } catch (NoSuchAlgorithmException e) {
-            // Fallback to default if strong instance is not available
-            throw new RuntimeException("No strong secure random available", e);
-        }
+    /**
+     * Constructs a new HangmanWords instance with the default word lists and SecureRandom.
+     */
+    public HangmanWords() {
+        this(defaultCategoryWordsMap(), defaultSecureRandom());
+    }
 
-        CATEGORY_WORDS_MAP = Map.of(
+    /**
+     * Constructs a new HangmanWords instance with the specified word lists and SecureRandom.
+     *
+     * @param categoryWordsMap the category words map
+     * @param secureRandom the SecureRandom instance
+     */
+    public HangmanWords(Map<Integer, List<String>> categoryWordsMap, SecureRandom secureRandom) {
+        this.categoryWordsMap = categoryWordsMap;
+        this.secureRandom = secureRandom;
+    }
+
+    private static Map<Integer, List<String>> defaultCategoryWordsMap() {
+        return Map.of(
             Category.FRUITS.id(), List.of(
                 "apple", "banana", "cherry", "date", "elderberry",
                 "fig", "grape", "honeydew", "kiwi", "lemon"
@@ -102,6 +113,14 @@ public final class HangmanWords {
         );
     }
 
+    private static SecureRandom defaultSecureRandom() {
+        try {
+            return SecureRandom.getInstanceStrong();
+        } catch (NoSuchAlgorithmException e) {
+            throw new RuntimeException("No strong secure random available", e);
+        }
+    }
+
     /**
      * Retrieves a random word from the specified category.
      * If categoryId is 0, a random category is selected first.
@@ -110,11 +129,11 @@ public final class HangmanWords {
      * @return a randomly selected word from the specified or random category
      * @throws IllegalArgumentException if the categoryId is invalid
      */
-    public static String getRandomWord(int categoryId) {
+    public String getRandomWord(int categoryId) {
         Category category;
 
         if (categoryId == 0) {
-            category = Category.getRandomCategory();
+            category = Category.getRandomCategory(secureRandom());
         } else {
             category = Category.fromId(categoryId);
             if (category == null) {
@@ -122,12 +141,12 @@ public final class HangmanWords {
             }
         }
 
-        List<String> words = CATEGORY_WORDS_MAP.get(category.id());
+        List<String> words = categoryWordsMap().get(category.id());
         if (words == null || words.isEmpty()) {
             throw new IllegalStateException("No words available for category: " + category);
         }
 
-        int randomIndex = SECURE_RANDOM.nextInt(words.size());
+        int randomIndex = secureRandom().nextInt(words.size());
         return words.get(randomIndex);
     }
 
@@ -136,7 +155,7 @@ public final class HangmanWords {
      *
      * @return a list of Category enums
      */
-    public static List<Category> getAllCategories() {
+    public List<Category> getAllCategories() {
         return List.of(Category.values());
     }
 }

@@ -6,6 +6,7 @@ import java.io.UnsupportedEncodingException;
 import java.nio.charset.StandardCharsets;
 import java.util.Locale;
 import lombok.Getter;
+import lombok.Setter;
 
 /**
  * CustomPrintStream provides a static API compatible with {@code System.out}
@@ -17,6 +18,7 @@ public final class OutputHandler { // Make the class final to prevent subclassin
      * The underlying PrintStream used for output.
      */
     @Getter
+    @Setter
     private static PrintStream printStream = System.out;
 
     // Private constructor to prevent instantiation

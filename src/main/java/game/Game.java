@@ -7,7 +7,7 @@ import handlers.UserInputHandler;
 import hangman.Hangman;
 import java.util.Arrays;
 import java.util.List;
-import java.util.function.Predicate; // Changed from Function to Predicate
+import java.util.function.Predicate;
 import keyboard.Keyboard;
 import word.Word;
 

@@ -89,7 +89,6 @@ public final class InputUtil {
 
     /**
      * Optionally, call this method to close the scanner when it's no longer needed.
-     * It's generally not recommended to close System.in, so use with caution.
      */
     public static void closeScanner() {
         SCANNER.close();
