@@ -8,12 +8,11 @@ import util.SetupWizard;
 import word.CapitalizedWord;
 
 @UtilityClass
-@SuppressWarnings("MagicNumber")
 public class Main {
     public static void main(String[] args) {
         SetupWizard.setupConsole();
         int difficulty = SetupWizard.setupDifficulty();
-        String word = SetupWizard.setupWord();
+        String word = SetupWizard.setupWordChoice();
 
         Game hangmanGame = new Game(
             new SimpleHangman(),

@@ -1,6 +1,7 @@
 package util;
 
 import handlers.OutputHandler;
+import java.nio.charset.StandardCharsets;
 import java.util.Scanner;
 
 public final class InputUtil {
@@ -10,8 +11,8 @@ public final class InputUtil {
         throw new UnsupportedOperationException("InputUtil is a utility class and cannot be instantiated.");
     }
 
-    // Single Scanner instance for all methods
-    private static final Scanner scanner = new Scanner(System.in);
+    // Single Scanner instance for all methods with specified encoding
+    private static final Scanner SCANNER = new Scanner(System.in, StandardCharsets.UTF_8);
 
     /**
      * Reads an integer from the user within the specified range [min, max].
@@ -24,7 +25,7 @@ public final class InputUtil {
     public static int readIntInRange(String prompt, int min, int max) {
         while (true) {
             OutputHandler.print(prompt + " ");
-            String input = scanner.nextLine().trim();
+            String input = SCANNER.nextLine().trim();
             try {
                 int value = Integer.parseInt(input);
                 if (value < min || value > max) {
@@ -47,10 +48,10 @@ public final class InputUtil {
     public static boolean readYesNo(String prompt) {
         while (true) {
             OutputHandler.print(prompt + " (y/n): ");
-            String input = scanner.nextLine().trim().toLowerCase();
-            if (input.equals("y")) {
+            String input = SCANNER.nextLine().trim().toLowerCase();
+            if ("y".equals(input)) {  // Changed from input.equals("y")
                 return true;
-            } else if (input.equals("n")) {
+            } else if ("n".equals(input)) {  // Changed from input.equals("n")
                 return false;
             } else {
                 OutputHandler.println("Invalid input. Please enter 'y' for yes or 'n' for no.");
@@ -68,7 +69,7 @@ public final class InputUtil {
     public static String readWordWithLimit(String prompt, int maxLength) {
         while (true) {
             OutputHandler.print(prompt + " ");
-            String input = scanner.nextLine().trim();
+            String input = SCANNER.nextLine().trim();
             if (input.isEmpty()) {
                 OutputHandler.println("Input cannot be empty. Please enter a valid word.");
                 continue;
@@ -91,7 +92,6 @@ public final class InputUtil {
      * It's generally not recommended to close System.in, so use with caution.
      */
     public static void closeScanner() {
-        scanner.close();
+        SCANNER.close();
     }
 }
-

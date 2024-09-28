@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 import lombok.Getter;
 
-@SuppressWarnings("all")
+@SuppressWarnings({"MagicNumber", "MultipleStringLiterals"})
 public class SimpleHangman implements Hangman {
     @Getter private final List<MutableLine<Character>> hangmanLines = Arrays.asList(
         new MutableLine<>(toCharacterList(" +--+"), ""),
